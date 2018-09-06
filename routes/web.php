@@ -45,10 +45,18 @@ Route::get('contact', 'PagesController@getContact');
 
 Route::post('contact', 'PagesController@postContact');
 
+Route::get('nomination', 'NominationController@getNomination');
+
+route::resource('nominations','NominationController');
+
+Route::post('nomination', 'NominationController@postNomination');
+
+Route::get('/nominate-leader', 'NominationController@index')->name('nominations.index');
+
 route::resource('posts','PostController');
 
 route::resource('bibles','BibleController');
-
+Route::get('/bible-study', 'BibleController@bs')->name('bibles.bs');
 route::resource('missions','MissionController');
 
 route::resource('contacts','ContactController');
@@ -59,7 +67,6 @@ Route::get('home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('home', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@admin')
     ->middleware('is_admin')
@@ -79,4 +86,6 @@ route::resource('category','CategoryController',['except'=>['create']]);
 
 
 Route::resource('products', 'ProductController', ['except' => 'show']);
-Route::resource('libraries', 'LibraryController', ['except' => 'show']);
+route::resource('library','LibraryController');
+
+Route::get('dynamic_pdf','UserController@pdf');

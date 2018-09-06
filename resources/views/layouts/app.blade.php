@@ -40,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li class="{{Request::is('contact')? "active" :""}}"><a href="{{ url('/') }}"> Back to Site</a></li>
+                        <li class="{{Request::is('contact')? "active" :""}}"><a href="{{ url('/welcome') }}"> Back to Site</a></li>
                     </ul>
                    
 
@@ -48,8 +48,9 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li class="{{Request::is('login')? "active" :""}}"><a href="{{ route('login') }}">Login</a></li>
+                            <li class="{{Request::is('register')? "active" :""}}"><a href="{{ route('register') }}">Register</a></li>
+                            <li class="{{Request::is('/manual')? "active" :""}}"><a href="{{ url('manual') }}">Help</a></li>
                         @else
 
                             <li class="dropdown">

@@ -22,6 +22,8 @@ class CreateBiblesTable extends Migration
             $table->string('residence');
             $table->string('hostel');
             $table->string('bs_leader');
+            $table->integer('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

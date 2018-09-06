@@ -19,17 +19,20 @@
           <ul class="nav navbar-nav">
             <li class="{{Request::is('welcome')? "active" :""}}"><a href="{{ url('welcome') }}">Home </a></li>
             <li class="{{Request::is('posts')? "active" :""}}"><a href="{{ url('posts') }}">Blog Posts </a></li>
-            <li class="{{Request::is('bibles/create')? "active" :""}}"><a href="{{ route('bibles.create') }}">Bs Registration </a></li>
+            <li class="{{Request::is('bible-study')? "active" :""}}"><a href="{{ route('bibles.bs') }}">Bible Study </a></li>
           
             <li> <a href="http://www.eunccu.org" target="_blank">EUNCCU Website</a></li>
-            <li><a href="/closure">Leadership Nominatiion</a></li>
-            <li><a href="{{ route('missions.create') }}">Mission Application</a></li>
-            <li><a href="/closure">EUNCCU Library</a></li>
+            <li class="{{Request::is('nominate-leader')? "active" :""}}"><a href="{{ route('nominations.index') }}">Leadership Nomination</a></li>
+
+
+            <li class="{{Request::is('missions/create')? "active" :""}}"><a href="{{ route('missions.create') }}">Mission Application</a></li>
+            <li class="{{Request::is('library')? "active" :""}}"><a href="{{ url('library') }}">EUNCCU Library</a></li>
 
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             <li class="{{Request::is('contact')? "active" :""}}"><a href="{{ url('contact') }}">Contact Us</a></li>
+            <li class="{{Request::is('manual')? "active" :""}}"><a href="{{ url('manual') }}">Help</a></li>
 
 
 
@@ -56,6 +59,7 @@
 
                                     <ul class="dropdown-menu" role="menu">
                                       <li><a href="{{ url('profile') }}">Profile</a></li>
+
                                       <!-- Adminstrator Rights -->
                                       @if(auth()->user()->isAdmin())
 

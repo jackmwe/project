@@ -7,24 +7,27 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Library;
+use App\Category;
 use Validator;
+use Session;
 
 class LibraryController extends Controller
 {
+	public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('is_admin')->only('index');
+    }
 	public function index()
 	{
-		$libraries = Library::withDepth()->get();
-		$libraries = $libraries->toTree();
-
-		return view('libraries.index', ['libraries' => $libraries]);
+		$books = Library::orderBy('id','desc')->paginate(10);
+		return view('library.index')->withBooks($books);
 	}
 
 	public function create()
 	{
-		$libraries = Library::withDepth()->get();
-		$libraries = $libraries->toTree();
-
-		return view('libraries.create', ['libraries' => $libraries]);
+		$categories = Category::all();
+        return view('library.create')->withCategories($categories);
 	}
 
 	/**
@@ -33,42 +36,39 @@ class LibraryController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
+
+
 	public function store(Request $request)
 	{
-		$validator = Validator::make($request->all(), [
-			'title'       => 'required|max:100',
-			'description' => 'max:255',
-			'id'          => 'integer|exists:libraries'
-		]);
+		//Validate Data
+        $this->validate($request, array(
+            'name' => 'required',
+            'phone' => 'required|regex:/(07)[0-9]{8}/',
+            'title' =>'required|max:255',
+            'author' =>'required|max:255',
+            'category_id' =>'required|integer',
+            'description' =>'required'
 
-		if(!$validator->fails())
-		{
-			$node = Library::create([
-				'title'       => $request->input('title'),
-				'description' => $request->input('description')
-			]);
+        ));
 
-			$parent = $request->input('id');
-			// if node save as root
-			if($parent == null)
-			{
-				$node->saveAsRoot();
+        // Store in Database
+        $library= new Library;
+        $library->name=$request->name;
+        $library->phone=$request->phone;
+        $library->title=$request->title;
+        $library->author=$request->author;
+        $library->category_id=$request->category_id;
+        $library->description=$request->description;
 
-				return redirect('libraries')
-					->with('successMsg', $request->input('title').' has been successfully created as root category.');
-			} else {
-				$node->parent_id = $parent;
-				$node->save();
-				$parent_name = Library::find($parent)->title;
+        $library->save();
 
-				return redirect('libraries')
-					->with('successMsg', $request->input('title').' has been successfully created under '.$parent_name);
-			}
-		} else {
-			return redirect('libraries/create')
-				->withErrors($validator)
-				->withInput();
-		}
+        Session::flash('success','Book Added Successifully');
+
+
+
+        
+        return redirect()->route('library.index', $library->id);
+   
 	}
 
 	/**
@@ -79,11 +79,7 @@ class LibraryController extends Controller
 	 */
 	public function edit($id)
 	{
-		$library = Library::find($id);
-		$libraries = Library::withDepth()->get();
-		$libraries = $libraries->toTree();
-
-		return view('libraries.edit', ['library' => $library, 'libraries' => $libraries]);
+		
 	}
 
 	/**
@@ -95,74 +91,8 @@ class LibraryController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		$library = Library::findOrFail($id);
-
-		$validator = Validator::make($request->all(), [
-			'title'       => 'required|max:100',
-			'description' => 'max:255',
-			'id'          => 'integer|exists:libraries'
-		]);
-
-		$parent = $request->input('id');
-		$node = Library::find($parent);
-
-		// if change the node
-		if ($library->parent_id != $parent)
-		{
-			// if the node has children
-			if ($library->getDescendantCount() > 0)
-			{
-				return redirect()
-					->back()
-					->with('errorMsg', 'This library has children, you can\'t move this library until you removed all the children');
-			} else {
-				if(!$validator->fails())
-				{
-					// delete node first
-					$library->delete();
-					// then recreate new node
-					$node = Library::create([
-						'title'       => $request->input('title'),
-						'description' => $request->input('description')
-					]);
-					// if node move to root
-					if($parent == null)
-					{
-						$node->saveAsRoot();
-
-						return redirect('libraries')
-							->with('successMsg', $request->input('title').' has been successfully moved as root library.');
-					} else {
-						$node->parent_id = $parent;
-						$node->save();
-						$parent_name = Library::find($parent)->title;
-
-						return redirect('libraries')
-							->with('successMsg', $request->input('title').' has been successfully moved under '.$parent_name);
-					}
-				} else {
-					return redirect('libraries')
-						->with('successMsg', 'Library has been successfully edited.');
-				}
-			}
-		} else {
-			if(!$validator->fails())
-			{
-				$library->title = $request->input('title');
-				$library->description = $request->input('description');
-				$library->save();
-
-				return redirect('libraries')
-					->with('successMsg', 'Library has been successfully edited.');
-			} else {
-				return redirect()
-					->back()
-					->withErrors($validator)
-					->withInput();
-			}
-		}
+		//
 	}
-
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -171,13 +101,6 @@ class LibraryController extends Controller
 	 */
 	public function destroy($id)
 	{
-		$library = Library::findOrFail($id);
-
-		if(!$library->delete())
-		{
-			return redirect('libraries');
-		}
-
-		return redirect('libraries')->with('successMsg', $library->title.' has been deleted.');
+		
 	}
 }

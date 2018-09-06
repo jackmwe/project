@@ -102,4 +102,17 @@
             $users = User::find($id);
             return view('user.editProfile', compact('users')); 
         }
+
+
+    function pdf(){
+        $user_data = $this->get_user_data();
+        return view('users.index') ->with('user_data', $user_data);
+    }
+
+    function get_user_data(){
+        $user_data = DB::table('users')
+                    ->limit(10)
+                    -> get();
+        return $user_data;
+    }
     }

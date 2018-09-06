@@ -77,7 +77,7 @@
             'editorial'=>'Editorial Ministry',
             'ebenezer'=>'Ebenezer Ministry', 
             'instrumentalist'=>'Instrumentalists Ministry',
-            'not_yet'=>'Not Yet in Ministry Team'], 
+            'not_yet'=>'Not Yet in Ministry'], 
             null, ['class' => 'form-control']) }}
         </div>
 

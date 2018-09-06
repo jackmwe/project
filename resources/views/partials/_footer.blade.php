@@ -1,32 +1,17 @@
-<style >#grad1 {
-    height: 100%;
-    background-color: black;
-    color: white;
-    margin-right: 0px;
-    margin-left: 0px;
-    /*background-image: linear-gradient(red, white, red);*/
+<style >
+   .footer{
+   position: sticky;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: black;
+   color: red;
+   text-align: center;
 }
 </style>
-<style >#grad2 {
-    height: 100%;
-    background-color: black;
-    color: black;
-    background-image: linear-gradient(red, white, red);
-    margin-right: 0px;
-    margin-left: 0px;
-}
-</style>
-
-<!--  <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-  </form>
- -->
  <br>
 
- <div id="grad1" class="col-lg-12 text-center">
+ <div id="grad1" class="footer">
  	<div class="col-lg-4">
 			<dl class="dl-horizontal">
 			  <dt><img src="{{ asset('img/twitter.png') }}" alt="twitter"/></dt>

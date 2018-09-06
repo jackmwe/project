@@ -8,6 +8,8 @@ use App\Bible;
 
 use Session;
 
+use Auth;
+
 class BibleController extends Controller
 {
     public function __construct()
@@ -55,7 +57,8 @@ class BibleController extends Controller
             'yos' => 'integer',
             'residence' =>'required|max:255',
             'hostel'=>'required|string|max:255',
-            'bs_leader'=>'required|string|max:5'
+            'bs_leader'=>'required|string|max:5',
+            
 
         ));
 
@@ -69,6 +72,7 @@ class BibleController extends Controller
         $bible->residence=$request->residence;
         $bible->hostel=$request->hostel;
         $bible->bs_leader=$request->bs_leader;
+        $bible->user_id=Auth::id();
 
         $bible->save();
 
@@ -101,7 +105,12 @@ class BibleController extends Controller
     public function edit($id)
     {
         //Find  the post in database and save it as a variable.
-        $bible = Bible::find($id);
+        $bible=Bible::where('id',$id)->first();
+        // dd($bible);
+        if (Auth::id()!=$bible->user_id) {
+            return view('errors.404');
+        }
+        //$bible = Bible::find($id);
 
         //Return the view and pass in the variable we previously created
         return view('bibles.edit')->withBible($bible);
@@ -166,5 +175,11 @@ class BibleController extends Controller
         Session::flash('success','BS registration cancelled');
         return redirect()->route('bibles.index');
 
+    }
+     public function bs()
+    {
+        $check=Bible::where('user_id',Auth::id())->exists();
+        $bible=Bible::where('user_id',Auth::id())->first();
+        return view('bibles.bs',compact('check','bible'));
     }
 }

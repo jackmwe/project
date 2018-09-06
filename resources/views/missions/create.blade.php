@@ -160,7 +160,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Apply For Mission </div>
+                <div class="panel-heading" align="center">Apply For Mission  - {{strtoupper(Auth::user()->name) }}</div>
 
                 <div class="panel-body">
                  <form  class="form-horizontal"action="{{ route('missions.store') }}" method="POST" onsubmit="return ValidateForm(this);">
@@ -214,13 +214,29 @@
                             </td> 
                             <td>
                             <label for="yos"><b>Year of Study  *</b></label><br />
-                            <input name="yos" type="text" maxlength="50" value="{{Auth::user()->yos }}" style="width: 260px" /> 
+                            <select id="yos" type="text" class="form-control" name="yos" value="{{ Auth::user()->yos }}">
+                                  <option value="{{ Auth::user()->yos }}">{{ Auth::user()->yos }}</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                </select>
                             </td>
                         </tr> 
                         <tr> 
                             <td colspan="2">
                             <label for="et"><b>Evangelistic Team *</b></label><br />
-                            <input name="et" type="text" maxlength="100" value="{{ strtoupper(Auth::user()->et) }}" style="width: 535px" />
+                            {{ Form::select('et', [''=>'--Select Regional Team--', 
+                                'cet'=>'Central Evangelistic Team(CET)', 
+                                'net'=>'Nyanza Evangelistic Team(NET)', 
+                                'uet'=>'Utermost Evangelistic Team(UET)', 
+                                'weso' =>'Western Outreach(WESO)', 
+                                'mubet'=>'Mid-Eastern United Brethren Evangelistic Team(MUBET)', 
+                                'emuseta'=>'Emulatable University Students Evangelistic Team',
+                                'rivet'=>'Rift-Valley Evangelistic Team(RIVET)',
+                                'not_yet'=>'Not Yet in Evangelistic Team'], 
+                                null, ['class' => 'form-control' , 'required'=>'', 'autofocus' =>'']) }}
                             </td> 
                         </tr> 
                         <tr> 
@@ -240,8 +256,8 @@
                             <input name="church" type="text" maxlength="50" style="width: 260px" />
                             </td>
                              <td>
-                            <label for="missioners"><b>Number  of missioners the church </br/> can comfortably host *</b></label><br />
-                            <input name="missioners" type="Number" maxlength="50" style="width: 260px" />
+                            <label for="missioners"><b>Number  of missioners the church </br/> can comfortably host *</b>  <i>(50 - 2500)</i></label><br />
+                            <input name="missioners" type="Number" min="50" max="2500" maxlength="50" style="width: 260px" />
                             </td> 
                         </tr> 
                         <tr> 
@@ -257,18 +273,19 @@
                         <tr> 
                             <td>
                             <label for="distance"><b>Approximate distance from Nakuru<br/>(in kilometers) *</b></label><br />
-                            <input name="distance" type="text" maxlength="50" style="width: 260px" />
+                            <input name="distance" type="number" maxlength="50" style="width: 260px" />
                             </td> 
+
                             <td>
-                            <label for="fare"><b>Fare from Nakuru *</b></label><br />
-                            <input name="fare" type="text" maxlength="50" style="width: 260px" />
+                                
+                            <label for="fare"><b>Fare from Nakuru * </b><br/> <i>Between 50 and 10000 </i></label><br />
+                            <input name="fare" type="number" min="50" max="10000" maxlength="50" style="width: 260px" />
                             </td>    
                         </tr>
                         <tr> 
                             <td colspan="2">
                             <label for="substations"><b>Substations <br/>Local churches which can act as substations.</b></label><br />
-                            <textarea name="substations" rows="4" cols="40" style="width: 535px">
-                            </textarea>
+                            <textarea name="substations" rows="7" cols="40" style="width: 535px"></textarea>
                             </td> 
                         </tr> 
                         <tr> 

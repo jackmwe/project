@@ -15,10 +15,14 @@ class CreateLibrariesTable extends Migration
     public function up()
     {
         Schema::create('libraries', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 75);
-            $table->string('description', 255);
-            NestedSet::columns($table);
+             $table->increments('id');
+            $table->string('name');
+            $table->string('phone');
+            $table->string('title');
+            $table->string('author');
+            $table->integer('category_id');
+            $table->text('description');
+            $table->timestamps();
         });
     }
 

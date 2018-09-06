@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Page / Record not found.</title>
+        <title>Portal || Error.</title>
 
         <link href="https://fonts.googleapis.com/css?family=Roboto:200,400" rel="stylesheet" type="text/css">
 		<link href="{{ asset('la-assets/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
@@ -51,14 +51,14 @@
                 @if(isset($record_name) && isset($record_id))
 					<div class="title">{{ $record_name }} with id {{ $record_id }} not found</div>
 				@else
-					<div class="title">Page not found</div>
+					<div class="title">Page not found or trying to access restricted page</div>
 				@endif
 				
 				@if(Auth::guest())
 					<a href="{{ url('/') }}">Homepage</a> | 
 					<a href="javascript:history.back()">Go Back</a>
 				@else
-					<a href="{{ url(config('laraadmin.adminRoute')) }}">Dashboard.</a> | 
+					<a href="{{ url('/welcome')  }}">Home Page.</a> | 
 					<a href="javascript:history.back()">Go Back</a>
 				@endif
             </div>

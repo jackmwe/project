@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Apply For Mission </div>
+                <div class="panel-heading">Edit Mission Application for <b>{{strtoupper($mission->Name) }}</b> </div>
 
                 <div class="panel-body">
                 {!! Form::model($mission, ['class'=>'form-horizontal','route'=>['missions.update', $mission->id], 'method'=>'PUT'])!!}
@@ -59,7 +59,14 @@
                             </td> 
                             <td>
                             <label for="yos"><b>Year of Study  *</b></label><br />
-                            <input name="yos" type="text" maxlength="50" value="{{$mission->yos }}" style="width: 260px" /> 
+                            <select id="yos" type="text" class="form-control" name="yos" value="{{ $mission->yos }}" required autofocus >
+                                  <option value="{{ Auth::user()->yos }}">{{ Auth::user()->yos }}</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                            </select> 
                             </td>
                         </tr> 
                         <tr> 

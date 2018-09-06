@@ -15,7 +15,7 @@
 
 
     	{{form::label('title','Title::')}}
-    	{{form::text('title', null, array('class'=>'form-control', 'required'=>'', 'maxlength'=>'255'))}}
+    	{{form::text('title', null, array('class'=>'form-control', 'required'=>'', 'maxlength'=>'255', 'autofocus'=>''))}}
 
 
         {{form::label('category_id','Category:')}}
